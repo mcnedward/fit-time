@@ -14,9 +14,6 @@ import com.mcnedward.fittime.models.Rep;
 import com.mcnedward.fittime.utils.Extension;
 import com.mcnedward.fittime.views.ExerciseView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Edward on 2/1/2017.
  */
@@ -26,10 +23,12 @@ public class RepListAdapter extends RecyclerView.Adapter<RepListAdapter.ViewHold
 
     private Exercise mExercise;
     private Context mContext;
+    private ExerciseView mExerciseView;
 
-    public RepListAdapter(Context context, Exercise exercise) {
+    public RepListAdapter(Context context, Exercise exercise, ExerciseView exerciseView) {
         mContext = context;
         mExercise = exercise;
+        mExerciseView = exerciseView;
     }
 
     @Override
@@ -37,7 +36,7 @@ public class RepListAdapter extends RecyclerView.Adapter<RepListAdapter.ViewHold
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.view_rep, parent, false);
-        return new ViewHolder(mContext, view, mExercise, this);
+        return new ViewHolder(mContext, view, this);
     }
 
     @Override
@@ -52,10 +51,15 @@ public class RepListAdapter extends RecyclerView.Adapter<RepListAdapter.ViewHold
         return mExercise.getReps().size();
     }
 
+    private void removeRep(Rep rep) {
+        mExercise.removeRep(rep);
+        notifyDataSetChanged();
+        mExerciseView.onRepRemoved();
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mTextView;
-        private Exercise mExercise;
         private Rep mRep;
         private RepListAdapter mParent;
 
@@ -65,9 +69,8 @@ public class RepListAdapter extends RecyclerView.Adapter<RepListAdapter.ViewHold
          * @param itemView
          * @param repListAdapter Needs the parent so it can update when the delete button is pressed
          */
-        ViewHolder(Context context, View itemView, Exercise exercise, RepListAdapter repListAdapter) {
+        ViewHolder(Context context, View itemView, RepListAdapter repListAdapter) {
             super(itemView);
-            mExercise = exercise;
             mParent = repListAdapter;
             mTextView = (TextView) itemView.findViewById(R.id.text_rep);
             ImageView mButton = (ImageView) itemView.findViewById(R.id.button_delete);
@@ -81,8 +84,7 @@ public class RepListAdapter extends RecyclerView.Adapter<RepListAdapter.ViewHold
         }
 
         void remove() {
-            mExercise.removeRep(mRep);
-            mParent.notifyDataSetChanged();
+            mParent.removeRep(mRep);
         }
     }
 

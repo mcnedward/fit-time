@@ -2,7 +2,7 @@ package com.mcnedward.fittime.utils;
 
 import android.util.Log;
 
-import com.mcnedward.fittime.views.ExerciseView;
+import com.mcnedward.fittime.listeners.UIThreadListener;
 
 /**
  * Created by Edward on 2/1/2017.
@@ -12,11 +12,11 @@ public class TimerThread extends Thread implements IThread {
     private static final String TAG = TimerThread.class.getName();
 
     private boolean mStarted, mRunning, mPaused;
-    private ExerciseView mExerciseView;
+    private UIThreadListener mListener;
 
-    public TimerThread(ExerciseView exerciseView) {
+    public TimerThread(UIThreadListener listener) {
         super("Timer Thread");
-        mExerciseView = exerciseView;
+        mListener = listener;
         mStarted = false;
         mRunning = false;
     }
@@ -33,9 +33,9 @@ public class TimerThread extends Thread implements IThread {
                 e.printStackTrace();
             }
             if (mPaused) continue;
-            if (mExerciseView == null || mExerciseView.getHandler() == null) return;
-            mExerciseView.getHandler().post(() -> {
-                    mExerciseView.run();
+            if (mListener == null || mListener.getHandler() == null) return;
+            mListener.getHandler().post(() -> {
+                    mListener.run();
             });
         }
     }

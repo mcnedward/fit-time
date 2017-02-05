@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 
 import com.mcnedward.fittime.R;
 import com.mcnedward.fittime.models.Exercise;
-import com.mcnedward.fittime.views.ExerciseView;
+import com.mcnedward.fittime.views.TimedExerciseView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +38,9 @@ public class ExerciseListAdapter extends ArrayAdapter<Exercise> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = new ExerciseView(context, getItem(position));
+            convertView = new TimedExerciseView(context, getItem(position));
         }
-        ExerciseView view = (ExerciseView) convertView;
+        TimedExerciseView view = (TimedExerciseView) convertView;
         view.update(this, groups.get(position));
         return view;
     }

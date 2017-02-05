@@ -32,6 +32,12 @@ public class Timer {
         start();
     }
 
+    public void reset() {
+        mStartTime = 0;
+        mStopTime = 0;
+        mRunning = false;
+    }
+
     public boolean isRunning() {
         return mRunning;
     }

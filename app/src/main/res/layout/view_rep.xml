@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:textSize="16sp"
         android:text="@string/placeholder" />
 
     <ImageView
