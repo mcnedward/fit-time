@@ -1,6 +1,5 @@
 package com.mcnedward.fittime.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -22,7 +21,6 @@ public class RepExerciseView extends ExerciseView {
     private static final String TAG = RepExerciseView.class.getName();
 
     private EditText mRepCountText;
-    private ImageView mCheckButton;
 
     public RepExerciseView(Context context, Exercise exercise) {
         super(context, exercise);
@@ -67,7 +65,7 @@ public class RepExerciseView extends ExerciseView {
             }
         }});
 
-        mCheckButton = (ImageView) findViewById(R.id.button_check_rep);
+        ImageView mCheckButton = (ImageView) findViewById(R.id.button_check_rep);
         Extension.setRippleBackground(context, mCheckButton);
         mCheckButton.setOnClickListener(v -> finishRep());
     }
@@ -85,7 +83,7 @@ public class RepExerciseView extends ExerciseView {
             Toast.makeText(context, "You need to enter a value above 0 for your reps!", Toast.LENGTH_SHORT).show();
             return;
         }
-        addRep(mRepCountText.getText().toString());
+        addSet(mRepCountText.getText().toString());
     }
 
     @Override

@@ -11,30 +11,29 @@ import java.util.List;
  * Created by Edward on 2/1/2017.
  */
 
-public abstract class Exercise extends BaseEntity {
+public class Exercise extends BaseEntity implements IExercise {
 
+    public static final int TIMED = 0x00000000;
+    public static final int REP = 0x00000004;
     private String mName;
     private int mType;
     private List<Set> mSets;
 
-    @IntDef({TIMED, REP})
-    @Retention(RetentionPolicy.SOURCE)
-    @interface ExerciseType {}
-    public static final int TIMED = 0x00000000;
-    public static final int REP = 0x00000004;
-
-    public Exercise() {
-        mSets = new ArrayList<>();
+    public Exercise(Long id, String name, @ExerciseType int type, List<Set> sets) {
+        this.id = id;
+        mName = name;
+        mType = type;
+        mSets = sets;
     }
 
     public Exercise(String name, @ExerciseType int type) {
-        this();
-        mName = name;
-        mType = type;
+        this(null, name, type, new ArrayList<>());
     }
 
-    public void addSet(String value) {
-        mSets.add(new Set(mSets.size() + 1, value, mType));
+    public Set addSet(String value) {
+        Set set = new Set(id, mSets.size() + 1, mType, value);
+        mSets.add(set);
+        return set;
     }
 
     /**
@@ -64,7 +63,16 @@ public abstract class Exercise extends BaseEntity {
         return mType;
     }
 
+    public void setType(int type) {
+        mType = type;
+    }
+
     public List<Set> getSets() {
         return mSets;
+    }
+
+    @IntDef({TIMED, REP})
+    @Retention(RetentionPolicy.SOURCE)
+    @interface ExerciseType {
     }
 }

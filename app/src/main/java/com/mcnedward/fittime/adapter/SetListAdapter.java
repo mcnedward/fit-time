@@ -18,21 +18,21 @@ import com.mcnedward.fittime.views.ExerciseView;
  * Created by Edward on 2/1/2017.
  */
 
-public class RepListAdapter extends RecyclerView.Adapter<RepListAdapter.ViewHolder> {
-    private static final String TAG = RepListAdapter.class.getName();
+public class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.ViewHolder> {
+    private static final String TAG = SetListAdapter.class.getName();
 
     private Exercise mExercise;
     private Context mContext;
     private ExerciseView mExerciseView;
 
-    public RepListAdapter(Context context, Exercise exercise, ExerciseView exerciseView) {
+    public SetListAdapter(Context context, Exercise exercise, ExerciseView exerciseView) {
         mContext = context;
         mExercise = exercise;
         mExerciseView = exerciseView;
     }
 
     @Override
-    public RepListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SetListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.item_rep, parent, false);
@@ -40,7 +40,7 @@ public class RepListAdapter extends RecyclerView.Adapter<RepListAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(RepListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(SetListAdapter.ViewHolder holder, int position) {
         if (mExercise.getSets().size() == 0) return;
         Set rep = mExercise.getSets().get(position);
         holder.update(rep);
@@ -51,40 +51,39 @@ public class RepListAdapter extends RecyclerView.Adapter<RepListAdapter.ViewHold
         return mExercise.getSets().size();
     }
 
-    private void removeRep(Set rep) {
-        mExercise.removeSet(rep);
+    private void removeSet(Set set) {
+        mExercise.removeSet(set);
         notifyDataSetChanged();
-        mExerciseView.onRepRemoved();
+        mExerciseView.onSetRemoved(set);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-
         private TextView mTextView;
-        private Set mRep;
-        private RepListAdapter mParent;
+        private Set mSet;
+        private SetListAdapter mParent;
 
         /**
-         * Creates the ViewHolder for the RepList items
+         * Creates the ViewHolder for the SetList items
          * @param context
          * @param itemView
-         * @param repListAdapter Needs the parent so it can update when the delete button is pressed
+         * @param setListAdapter Needs the parent so it can update when the delete button is pressed
          */
-        ViewHolder(Context context, View itemView, RepListAdapter repListAdapter) {
+        ViewHolder(Context context, View itemView, SetListAdapter setListAdapter) {
             super(itemView);
-            mParent = repListAdapter;
+            mParent = setListAdapter;
             mTextView = (TextView) itemView.findViewById(R.id.text_rep);
             ImageView mButton = (ImageView) itemView.findViewById(R.id.button_delete);
             Extension.setRippleBackground(context, mButton);
             mButton.setOnClickListener(v -> remove());
         }
 
-        void update(Set rep) {
-            mRep = rep;
-            mTextView.setText(rep.toString());
+        void update(Set set) {
+            mSet = set;
+            mTextView.setText(set.toString());
         }
 
         void remove() {
-            mParent.removeRep(mRep);
+            mParent.removeSet(mSet);
         }
     }
 

@@ -3,12 +3,10 @@
     <string name="exercise_name">Exercise Name</string>
     <string name="type">Type</string>
     <string name="add_exercise">Add Exercise</string>
-    <string name="no_exercise">No exercises yet. Try adding one!</string>
-
-
+    <string name="repetitive">Repetitive</string>
+    <string name="timed">Timed</string>
     <string name="no_reps">No Reps</string>
     <string name="default_time">00:00:00</string>
-
     <string name="placeholder">Replace Me!</string>
     <string name="zero">0</string>
 </resources>

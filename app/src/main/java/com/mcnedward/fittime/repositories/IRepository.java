@@ -20,9 +20,9 @@ public interface IRepository<T> {
 
     boolean delete(T entity) throws EntityDoesNotExistException;
 
-    List<T> retrieve();
+    List<T> getAll();
 
-    List<T> retrieve(String groupBy, String having, String orderBy);
+    List<T> getAll(String groupBy, String having, String orderBy);
 
     void close();
 }

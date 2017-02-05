@@ -3,21 +3,24 @@ package com.mcnedward.fittime.activities.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.mcnedward.fittime.R;
 import com.mcnedward.fittime.activities.AddExerciseActivity;
+import com.mcnedward.fittime.exceptions.EntityAlreadyExistsException;
 import com.mcnedward.fittime.models.Exercise;
-import com.mcnedward.fittime.models.RepExercise;
-import com.mcnedward.fittime.models.TimedExercise;
+import com.mcnedward.fittime.repositories.ExerciseRepository;
+import com.mcnedward.fittime.repositories.IExerciseRepository;
+import com.mcnedward.fittime.views.AddExerciseView;
 import com.mcnedward.fittime.views.ExerciseView;
 import com.mcnedward.fittime.views.RepExerciseView;
 import com.mcnedward.fittime.views.TimedExerciseView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,41 +30,59 @@ import java.util.List;
 public class MainFragment extends BaseFragment {
     private static final String TAG = MainFragment.class.getName();
 
+    private IExerciseRepository mExerciseRepository;
+    private LinearLayout mExerciseContainer;
+    private AddExerciseView mAddExerciseView;
+    private int mExerciseCount;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), AddExerciseActivity.class);
-            startActivity(intent);
-        });
-
+        mExerciseRepository = new ExerciseRepository(view.getContext());
         initialize(view);
         return view;
     }
 
     private void initialize(View view) {
-        // TODO The list view should start out invisible
-        view.findViewById(R.id.no_exercise_text).setVisibility(View.GONE);
+        mExerciseContainer = (LinearLayout) view.findViewById(R.id.container_exercises);
 
-        Exercise plank = new TimedExercise("Plank");
-        Exercise pushUps = new RepExercise("Push-ups");
-        List<Exercise> exerciseList = new ArrayList<>();
-        exerciseList.add(plank);
-        exerciseList.add(pushUps);
+        List<Exercise> exercises = mExerciseRepository.getAll();
+        mExerciseCount = exercises.size();
+        if (!exercises.isEmpty()) {
 
-        LinearLayout container = (LinearLayout) view.findViewById(R.id.container_exercises);
-        container.setVisibility(View.VISIBLE);
-        for (Exercise e : exerciseList) {
-            ExerciseView exerciseView = null;
-            if (e.getType() == Exercise.TIMED) {
-                exerciseView = new TimedExerciseView(view.getContext(), e);
-            } else if (e.getType() == Exercise.REP) {
-                exerciseView = new RepExerciseView(view.getContext(), e);
+            for (Exercise exercise : exercises) {
+                ExerciseView exerciseView = null;
+                if (exercise.getType() == Exercise.TIMED) {
+                    exerciseView = new TimedExerciseView(view.getContext(), exercise);
+                } else if (exercise.getType() == Exercise.REP) {
+                    exerciseView = new RepExerciseView(view.getContext(), exercise);
+                }
+                mExerciseContainer.addView(exerciseView);
             }
-            container.addView(exerciseView);
         }
+        if (mExerciseCount < 5) {
+            mAddExerciseView = new AddExerciseView(view.getContext(), this);
+            mExerciseContainer.addView(mAddExerciseView);
+        }
+    }
+
+    public void addExerciseToView(Exercise exercise) {
+        try {
+            mExerciseRepository.save(exercise);
+        } catch (EntityAlreadyExistsException e) {
+            Toast.makeText(getContext(), "That exercise is already added!", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, e.getMessage(), e);
+            return;
+        }
+        mExerciseContainer.removeView(mAddExerciseView);
+        if (exercise.getType() == Exercise.TIMED) {
+            mExerciseContainer.addView(new TimedExerciseView(getContext(), exercise));
+        } else if (exercise.getType() == Exercise.REP) {
+            mExerciseContainer.addView(new RepExerciseView(getContext(), exercise));
+        }
+        mExerciseCount++;
+        if (mExerciseCount >= 5) return;
+        mExerciseContainer.addView(mAddExerciseView);
     }
 
 }

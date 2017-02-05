@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.mcnedward.fittime.R;
 import com.mcnedward.fittime.listeners.UIThreadListener;
 import com.mcnedward.fittime.models.Exercise;
-import com.mcnedward.fittime.models.Set;
 import com.mcnedward.fittime.utils.Extension;
 import com.mcnedward.fittime.utils.Timer;
 import com.mcnedward.fittime.utils.TimerThread;
@@ -73,7 +72,7 @@ public class TimedExerciseView extends ExerciseView implements UIThreadListener 
         mCheckButton.setVisibility(INVISIBLE);
         mStopButton.setVisibility(INVISIBLE);
 
-        addRep(mTimer.getFormattedTime());
+        addSet(mTimer.getFormattedTime());
     }
 
     private void resetRep() {

@@ -10,29 +10,35 @@ import android.util.Log;
  * <p>
  * Some help taken from: http://www.androiddesignpatterns.com/2012/05/correctly-managing-your-sqlite-database.html
  */
-public class DatabaseHelper extends SQLiteOpenHelper {
+class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
 
     private static DatabaseHelper sInstance;
 
     // Database title
-    public static String DB_NAME = "FitTime.db";
+    private static String DB_NAME = "FitTime.db";
     // Database version - increment this number to upgrade the database
-    public static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 4;
 
     // Tables
-    public static final String EXERCISE_TABLE = "Exercises";
+    static final String EXERCISE_TABLE = "Exercises";
+    static final String SETS_TABLE = "Sets";
     // Id column, which should be the same across all tables
-    public static final String ID = "Id";
+    static final String ID = "Id";
     // Exercises table
-    public static final String E_NAME = "Name";
-    public static final String E_TYPE = "Type";
+    static final String E_NAME = "Name";
+    static final String E_TYPE = "Type";
+    //Sets table
+    static final String S_EXERCISE_ID = "ExerciseId";
+    static final String S_NUMBER = "Number";
+    static final String S_TYPE = "Type";
+    static final String S_VALUE = "Value";
 
-    public DatabaseHelper(Context context) {
+    private DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-    public static synchronized DatabaseHelper getInstance(Context context) {
+    static synchronized DatabaseHelper getInstance(Context context) {
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
@@ -45,12 +51,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /*****
      * CREATE STATEMENTS
      */
-    private static final String createExerciseTable = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                    "%s TEXT, %s TEXT)", EXERCISE_TABLE, ID, E_NAME, E_TYPE);
+    private static final String createExercisesTable = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "%s TEXT, %s TEXT)", EXERCISE_TABLE, ID, E_NAME, E_TYPE);
+
+    private static final String createSetsTable = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s INTEGER, %s INTEGER, %s INTEGER, %s TEXT)",
+            SETS_TABLE, ID, S_EXERCISE_ID, S_NUMBER, S_TYPE, S_VALUE);
+
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(createExerciseTable);
+        sqLiteDatabase.execSQL(createExercisesTable);
+        sqLiteDatabase.execSQL(createSetsTable);
     }
 
     @Override
@@ -64,8 +75,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * DROP Statements
      *****/
     private static final String DROP_EXERCISE_TABLE = "DROP TABLE IF EXISTS " + EXERCISE_TABLE;
+    private static final String DROP_SETS_TABLE = "DROP TABLE IF EXISTS " + SETS_TABLE;
 
     public void dropTables(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(DROP_EXERCISE_TABLE);
+        sqLiteDatabase.execSQL(DROP_SETS_TABLE);
     }
 }
