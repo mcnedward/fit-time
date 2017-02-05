@@ -4,10 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 
-import com.mcnedward.fittime.R;
 import com.mcnedward.fittime.models.Exercise;
+import com.mcnedward.fittime.views.ExerciseView;
+import com.mcnedward.fittime.views.RepExerciseView;
 import com.mcnedward.fittime.views.TimedExerciseView;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
  * Created by Edward on 2/1/2017.
  */
 
-public class ExerciseListAdapter extends ArrayAdapter<Exercise> {
+public class ExerciseListAdapter extends BaseAdapter {
     private static final String TAG = ExerciseListAdapter.class.getName();
 
     private List<Exercise> groups;
@@ -29,7 +30,6 @@ public class ExerciseListAdapter extends ArrayAdapter<Exercise> {
     }
 
     public ExerciseListAdapter(Context context, List<Exercise> groups) {
-        super(context, R.layout.item_timed_exercise);
         this.context = context;
         this.groups = groups;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -37,12 +37,15 @@ public class ExerciseListAdapter extends ArrayAdapter<Exercise> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Exercise exercise = groups.get(position);
         if (convertView == null) {
-            convertView = new TimedExerciseView(context, getItem(position));
+            if (exercise.getType() == Exercise.REP)
+                convertView = new RepExerciseView(context, exercise);
+            else if (exercise.getType() == Exercise.TIMED)
+                convertView = new TimedExerciseView(context, exercise);
         }
-        TimedExerciseView view = (TimedExerciseView) convertView;
-        view.update(this, groups.get(position));
-        return view;
+//        ((ExerciseView)convertView).update(this, exercise);
+        return convertView;
     }
 
 //    public void notifyDataSetChanged(boolean triggerReload) {

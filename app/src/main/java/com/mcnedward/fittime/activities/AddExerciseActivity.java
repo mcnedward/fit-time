@@ -1,4 +1,4 @@
-package com.mcnedward.fittime.activities.fragment;
+package com.mcnedward.fittime.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

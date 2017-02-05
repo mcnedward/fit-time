@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 
 import com.mcnedward.fittime.R;
@@ -14,6 +15,8 @@ import com.mcnedward.fittime.R;
  */
 
 public class Extension {
+    private static final String TAG = Extension.class.getName();
+
     /**
      * Creates a new RippleDrawable for a ripple effect on a View.
      *
@@ -43,5 +46,23 @@ public class Extension {
      */
     public static void setRippleBackground(Context context, View view) {
         setRippleBackground(context, view, R.color.FireBrick, R.color.GhostWhite);
+    }
+
+    public static int tryGetInt(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            Log.w(TAG, "There was a problem formatting the input for the rep counter...", e);
+            return 0;
+        }
+    }
+
+    public static int tryGetInt(String value, int defaultValue) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            Log.w(TAG, "There was a problem formatting the input for the rep counter...", e);
+            return defaultValue;
+        }
     }
 }

@@ -18,8 +18,9 @@
 
     <ImageView
         android:id="@+id/button_delete"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/text_rep"
         android:src="@drawable/ic_close_black_24dp"/>
 

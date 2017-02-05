@@ -26,10 +26,11 @@ public class ExerciseRepository extends Repository<Exercise> implements IExercis
 
     @Override
     protected Exercise generateObjectFromCursor(Cursor cursor) {
-        Exercise exercise = new Exercise();
-        exercise.setName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.E_NAME)));
-        exercise.setType(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.E_TYPE)));
-        return exercise;
+//        Exercise exercise = new Exercise();
+//        exercise.setName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.E_NAME)));
+//        exercise.setType(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.E_TYPE)));
+//        return exercise;
+        return null;
     }
 
     @Override

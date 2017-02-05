@@ -29,14 +29,16 @@ public class TimerThread extends Thread implements IThread {
         while (mRunning) {
             try {
                 Thread.sleep(1);
+                if (mPaused) continue;
+                if (mListener == null || mListener.getHandler() == null) continue;
+                mListener.getHandler().post(() -> {
+                    mListener.run();
+                });
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                Log.e(TAG, "Something went wrong in the TimerThread...", e);
             }
-            if (mPaused) continue;
-            if (mListener == null || mListener.getHandler() == null) return;
-            mListener.getHandler().post(() -> {
-                    mListener.run();
-            });
         }
     }
 
@@ -80,6 +82,7 @@ public class TimerThread extends Thread implements IThread {
 
     /**
      * Pause the thread.
+     *
      * @param pause
      */
     @Override

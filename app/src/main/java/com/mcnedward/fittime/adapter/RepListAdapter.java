@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.mcnedward.fittime.R;
 import com.mcnedward.fittime.models.Exercise;
-import com.mcnedward.fittime.models.Rep;
+import com.mcnedward.fittime.models.Set;
 import com.mcnedward.fittime.utils.Extension;
 import com.mcnedward.fittime.views.ExerciseView;
 
@@ -35,24 +35,24 @@ public class RepListAdapter extends RecyclerView.Adapter<RepListAdapter.ViewHold
     public RepListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(R.layout.view_rep, parent, false);
+        View view = inflater.inflate(R.layout.item_rep, parent, false);
         return new ViewHolder(mContext, view, this);
     }
 
     @Override
     public void onBindViewHolder(RepListAdapter.ViewHolder holder, int position) {
-        if (mExercise.getReps().size() == 0) return;
-        Rep rep = mExercise.getReps().get(position);
+        if (mExercise.getSets().size() == 0) return;
+        Set rep = mExercise.getSets().get(position);
         holder.update(rep);
     }
 
     @Override
     public int getItemCount() {
-        return mExercise.getReps().size();
+        return mExercise.getSets().size();
     }
 
-    private void removeRep(Rep rep) {
-        mExercise.removeRep(rep);
+    private void removeRep(Set rep) {
+        mExercise.removeSet(rep);
         notifyDataSetChanged();
         mExerciseView.onRepRemoved();
     }
@@ -60,7 +60,7 @@ public class RepListAdapter extends RecyclerView.Adapter<RepListAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mTextView;
-        private Rep mRep;
+        private Set mRep;
         private RepListAdapter mParent;
 
         /**
@@ -78,7 +78,7 @@ public class RepListAdapter extends RecyclerView.Adapter<RepListAdapter.ViewHold
             mButton.setOnClickListener(v -> remove());
         }
 
-        void update(Rep rep) {
+        void update(Set rep) {
             mRep = rep;
             mTextView.setText(rep.toString());
         }

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.mcnedward.fittime.R;
 import com.mcnedward.fittime.adapter.RepListAdapter;
 import com.mcnedward.fittime.models.Exercise;
-import com.mcnedward.fittime.models.Rep;
 
 /**
  * Created by Edward on 2/4/2017.
@@ -19,15 +18,15 @@ import com.mcnedward.fittime.models.Rep;
 public abstract class ExerciseView extends LinearLayout {
 
     protected Context context;
-    protected Exercise mExercise;
+    protected Exercise exercise;
     private TextView mNoRepsText;
-    private RecyclerView mRepList;
     private RepListAdapter mAdapter;
+    private RecyclerView mRepList;
 
     public ExerciseView(Context context, Exercise exercise) {
         super(context);
         this.context = context;
-        mExercise = exercise;
+        this.exercise = exercise;
         initialize();
     }
 
@@ -38,25 +37,37 @@ public abstract class ExerciseView extends LinearLayout {
     }
 
     private void initialize() {
-        inflate(context, R.layout.item_timed_exercise, this);
+        inflate(context, R.layout.item_exercise, this);
+
+        // Add the view for the specific type of exercise
+        LinearLayout container = (LinearLayout) findViewById(R.id.container_exercise);
+        inflate(context, getLayoutResource(), container);
+
+        // Timer view should only be shown for timed exercises
+        if (exercise.getType() == Exercise.TIMED)
+            (findViewById(R.id.text_timer)).setVisibility(VISIBLE);
+        TextView mName = (TextView) findViewById(R.id.text_name);
         mNoRepsText = (TextView) findViewById(R.id.text_no_reps);
-        mAdapter = new RepListAdapter(context, mExercise, this);
+        mAdapter = new RepListAdapter(context, exercise, this);
         mRepList = (RecyclerView) findViewById(R.id.list_reps);
         mRepList.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         mRepList.setAdapter(mAdapter);
+
+        mName.setText(exercise.getName());
     }
 
     public void onRepRemoved() {
         updateRepListVisible();
     }
 
-    protected void addRep(Rep rep) {
-        mExercise.addRep(rep);
+    protected void addRep(String value) {
+        exercise.addSet(value);
+        mAdapter.notifyDataSetChanged();
         updateRepListVisible();
     }
 
     private void updateRepListVisible() {
-        if (mExercise.getReps().size() <= 0) {
+        if (exercise.getSets().size() <= 0) {
             mRepList.setVisibility(GONE);
             mNoRepsText.setVisibility(VISIBLE);
         } else {
@@ -64,5 +75,7 @@ public abstract class ExerciseView extends LinearLayout {
             mNoRepsText.setVisibility(GONE);
         }
     }
+
+    protected abstract int getLayoutResource();
 
 }

@@ -1,5 +1,9 @@
 package com.mcnedward.fittime.models;
 
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,36 +11,43 @@ import java.util.List;
  * Created by Edward on 2/1/2017.
  */
 
-public class Exercise extends BaseEntity {
+public abstract class Exercise extends BaseEntity {
+
     private String mName;
-    private String mType;
-    private List<Rep> mReps;
+    private int mType;
+    private List<Set> mSets;
+
+    @IntDef({TIMED, REP})
+    @Retention(RetentionPolicy.SOURCE)
+    @interface ExerciseType {}
+    public static final int TIMED = 0x00000000;
+    public static final int REP = 0x00000004;
 
     public Exercise() {
-        mReps = new ArrayList<>();
+        mSets = new ArrayList<>();
     }
 
-    public Exercise(String name, String type) {
+    public Exercise(String name, @ExerciseType int type) {
         this();
         mName = name;
         mType = type;
     }
 
-    public void addRep(Rep rep) {
-        mReps.add(rep);
+    public void addSet(String value) {
+        mSets.add(new Set(mSets.size() + 1, value, mType));
     }
 
     /**
-     * Removes a rep from this exercise, if it exists. If it was removed, the number for all the other reps will be adjusted to account for the now deleted rep.
+     * Removes a set from this exercise, if it exists. If it was removed, the number for all the other sets will be adjusted to account for the now deleted set.
      *
-     * @param rep
+     * @param set
      */
-    public void removeRep(Rep rep) {
-        boolean removed = mReps.remove(rep);
+    public void removeSet(Set set) {
+        boolean removed = mSets.remove(set);
         if (removed) {
-            // Need to sort all the reps to account for the deleted one
-            for (int i = 0; i < mReps.size(); i++) {
-                mReps.get(i).setNumber(i + 1);
+            // Need to sort all the sets to account for the deleted one
+            for (int i = 0; i < mSets.size(); i++) {
+                mSets.get(i).setNumber(i + 1);
             }
         }
     }
@@ -49,19 +60,11 @@ public class Exercise extends BaseEntity {
         mName = name;
     }
 
-    public String getType() {
+    public int getType() {
         return mType;
     }
 
-    public void setType(String type) {
-        mType = type;
-    }
-
-    public List<Rep> getReps() {
-        return mReps;
-    }
-
-    public void setReps(List<Rep> reps) {
-        mReps = reps;
+    public List<Set> getSets() {
+        return mSets;
     }
 }

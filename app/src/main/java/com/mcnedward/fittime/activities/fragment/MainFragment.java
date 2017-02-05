@@ -6,12 +6,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.mcnedward.fittime.R;
-import com.mcnedward.fittime.adapter.ExerciseListAdapter;
+import com.mcnedward.fittime.activities.AddExerciseActivity;
 import com.mcnedward.fittime.models.Exercise;
+import com.mcnedward.fittime.models.RepExercise;
+import com.mcnedward.fittime.models.TimedExercise;
+import com.mcnedward.fittime.views.ExerciseView;
+import com.mcnedward.fittime.views.RepExerciseView;
+import com.mcnedward.fittime.views.TimedExerciseView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,14 +45,23 @@ public class MainFragment extends BaseFragment {
         // TODO The list view should start out invisible
         view.findViewById(R.id.no_exercise_text).setVisibility(View.GONE);
 
-        Exercise plank = new Exercise("Plank", "Timed");
+        Exercise plank = new TimedExercise("Plank");
+        Exercise pushUps = new RepExercise("Push-ups");
         List<Exercise> exerciseList = new ArrayList<>();
         exerciseList.add(plank);
+        exerciseList.add(pushUps);
 
-        ExerciseListAdapter adapter = new ExerciseListAdapter(view.getContext(), exerciseList);
-        ListView listView = (ListView) view.findViewById(R.id.list_exercise);
-        listView.setAdapter(adapter);
-        listView.setVisibility(View.VISIBLE);
+        LinearLayout container = (LinearLayout) view.findViewById(R.id.container_exercises);
+        container.setVisibility(View.VISIBLE);
+        for (Exercise e : exerciseList) {
+            ExerciseView exerciseView = null;
+            if (e.getType() == Exercise.TIMED) {
+                exerciseView = new TimedExerciseView(view.getContext(), e);
+            } else if (e.getType() == Exercise.REP) {
+                exerciseView = new RepExerciseView(view.getContext(), e);
+            }
+            container.addView(exerciseView);
+        }
     }
 
 }
