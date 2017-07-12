@@ -1,17 +1,19 @@
 package com.mcnedward.fittime.activities.fragment;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.mcnedward.fittime.R;
-import com.mcnedward.fittime.activities.AddExerciseActivity;
 import com.mcnedward.fittime.exceptions.EntityAlreadyExistsException;
 import com.mcnedward.fittime.models.Exercise;
 import com.mcnedward.fittime.repositories.ExerciseRepository;
@@ -33,6 +35,7 @@ public class MainFragment extends BaseFragment {
     private IExerciseRepository mExerciseRepository;
     private LinearLayout mExerciseContainer;
     private AddExerciseView mAddExerciseView;
+    private PopupWindow mPopupWindow;
     private int mExerciseCount;
 
     @Override
@@ -60,10 +63,20 @@ public class MainFragment extends BaseFragment {
                 mExerciseContainer.addView(exerciseView);
             }
         }
-        if (mExerciseCount < 5) {
-            mAddExerciseView = new AddExerciseView(view.getContext(), this);
-            mExerciseContainer.addView(mAddExerciseView);
+        view.findViewById(R.id.button_popup).setOnClickListener(v -> openPopup(view.getContext()));
+    }
+
+    public void openPopup(Context context) {
+        if (mAddExerciseView == null) {
+            mAddExerciseView = new AddExerciseView(context);
         }
+        if (mPopupWindow == null) {
+            mPopupWindow = new PopupWindow(mAddExerciseView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+            mPopupWindow.setElevation(5.0f);
+            mPopupWindow.setWidth(getPopupWidth());
+            mPopupWindow.setAnimationStyle(R.style.Animation);
+        }
+        mPopupWindow.showAtLocation(mExerciseContainer, Gravity.CENTER, 0, 0);
     }
 
     public void addExerciseToView(Exercise exercise) {
@@ -83,6 +96,12 @@ public class MainFragment extends BaseFragment {
         mExerciseCount++;
         if (mExerciseCount >= 5) return;
         mExerciseContainer.addView(mAddExerciseView);
+    }
+
+    private int getPopupWidth() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return (int) (dm.widthPixels * 0.8);
     }
 
 }
