@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">FitTime</string>
+
+    <string name="no_exercises_message">Add some exercises by tapping the plus icon in the top menu.</string>
+
     <string name="exercise_name">Exercise Name</string>
     <string name="type">Type</string>
     <string name="add_exercise">Add Exercise</string>
@@ -9,4 +12,8 @@
     <string name="default_time">00:00:00</string>
     <string name="placeholder">Replace Me!</string>
     <string name="zero">0</string>
+
+    <!--Menu-->
+    <string name="action_add">Add Exercise</string>
+    <string name="action_calendar">View History</string>
 </resources>
