@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.mcnedward.fittime.models.Exercise;
-import com.mcnedward.fittime.views.ExerciseView;
 import com.mcnedward.fittime.views.RepExerciseView;
 import com.mcnedward.fittime.views.TimedExerciseView;
 
@@ -48,6 +47,20 @@ public class ExerciseListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public void setGroups(List<Exercise> groups) {
+        this.groups = groups;
+        notifyDataSetChanged();
+    }
+
+    public void addExercise(Exercise exercise) {
+        this.groups.add(exercise);
+        notifyDataSetChanged();
+    }
+
+    public void reset() {
+        groups = new ArrayList<>();
+    }
+
 //    public void notifyDataSetChanged(boolean triggerReload) {
 //        if (triggerReload) {
 //            List<Exercise> data = loader.loadInBackground();
@@ -73,14 +86,5 @@ public class ExerciseListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
-    }
-
-    public void setGroups(List<Exercise> groups) {
-        this.groups = groups;
-        notifyDataSetChanged();
-    }
-
-    public void reset() {
-        groups = new ArrayList<>();
     }
 }
