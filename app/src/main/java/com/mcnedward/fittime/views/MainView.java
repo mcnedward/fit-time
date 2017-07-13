@@ -40,8 +40,8 @@ public class MainView extends LinearLayout {
         inflate(mContext, R.layout.view_main, this);
         IExerciseRepository mExerciseRepository = new ExerciseRepository(context);
 
-        ListView listView = (ListView) findViewById(R.id.list_exercises);
-        mNoExerciseTextView = (TextView) findViewById(R.id.text_no_exercises);
+        ListView listView = findViewById(R.id.list_exercises);
+        mNoExerciseTextView = findViewById(R.id.text_no_exercises);
 
         List<Exercise> exercises = mExerciseRepository.getAll();
         mListAdapter = new ExerciseListAdapter(mContext, exercises);
