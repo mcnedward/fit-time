@@ -4,26 +4,27 @@ package com.mcnedward.fittime.models;
  * Created by Edward on 2/1/2017.
  */
 
-public class Set extends BaseEntity {
+public class WorkSet extends BaseEntity {
 
-    private long mExerciseId;
+    private int mExerciseId;
     private int mNumber;
     private int mType;
     private String mValue;
+    private String mWorkDate;
 
-    public Set(long id, long exerciseId, int number, int type, String value) {
+    public WorkSet(int id, int exerciseId, int number, int type, String value) {
         this(exerciseId, number, type, value);
         this.id = id;
     }
 
-    Set(long exerciseId, int number, int type, String value) {
+    WorkSet(int exerciseId, int number, int type, String value) {
         mExerciseId = exerciseId;
         mNumber = number;
         mType = type;
         mValue = value;
     }
 
-    public long getExerciseId() {
+    public int getExerciseId() {
         return mExerciseId;
     }
 
@@ -55,6 +56,14 @@ public class Set extends BaseEntity {
         mValue = value;
     }
 
+    public String getWorkDate() {
+        return mWorkDate;
+    }
+
+    public void setWorkDate(String workDate) {
+        mWorkDate = workDate;
+    }
+
     @Override
     public String toString() {
         if (mType == Exercise.TIMED) {
@@ -62,7 +71,7 @@ public class Set extends BaseEntity {
         } else if (mType == Exercise.REP) {
             return String.format("%s x %s", mNumber, mValue);
         }
-        return String.format("Set #%s", mNumber);
+        return String.format("WorkSet #%s", mNumber);
     }
 
 }

@@ -17,38 +17,42 @@ public class Exercise extends BaseEntity implements IExercise {
     public static final int REP = 0x00000004;
     private String mName;
     private int mType;
-    private List<Set> mSets;
+    private List<WorkSet> mWorkSets;
 
-    public Exercise(Long id, String name, @ExerciseType int type, List<Set> sets) {
+    public Exercise(Integer id, String name, @ExerciseType int type, List<WorkSet> workSets) {
         this.id = id;
         mName = name;
         mType = type;
-        mSets = sets;
+        mWorkSets = workSets;
     }
 
     public Exercise(String name, @ExerciseType int type) {
         this(null, name, type, new ArrayList<>());
     }
 
-    public Set addSet(String value) {
-        Set set = new Set(id, mSets.size() + 1, mType, value);
-        mSets.add(set);
-        return set;
+    public WorkSet addSet(String value) {
+        WorkSet workSet = new WorkSet(id, mWorkSets.size() + 1, mType, value);
+        mWorkSets.add(workSet);
+        return workSet;
     }
 
     /**
-     * Removes a set from this exercise, if it exists. If it was removed, the number for all the other sets will be adjusted to account for the now deleted set.
+     * Removes a workSet from this exercise, if it exists. If it was removed, the number for all the other sets will be adjusted to account for the now deleted workSet.
      *
-     * @param set
+     * @param workSet
      */
-    public void removeSet(Set set) {
-        boolean removed = mSets.remove(set);
+    public void removeWorkSet(WorkSet workSet) {
+        boolean removed = mWorkSets.remove(workSet);
         if (removed) {
             // Need to sort all the sets to account for the deleted one
-            for (int i = 0; i < mSets.size(); i++) {
-                mSets.get(i).setNumber(i + 1);
+            for (int i = 0; i < mWorkSets.size(); i++) {
+                mWorkSets.get(i).setNumber(i + 1);
             }
         }
+    }
+
+    public void clearWorkSets() {
+        mWorkSets.clear();
     }
 
     public String getName() {
@@ -67,12 +71,17 @@ public class Exercise extends BaseEntity implements IExercise {
         mType = type;
     }
 
-    public List<Set> getSets() {
-        return mSets;
+    public List<WorkSet> getWorkSets() {
+        return mWorkSets;
     }
 
     @IntDef({TIMED, REP})
     @Retention(RetentionPolicy.SOURCE)
     @interface ExerciseType {
+    }
+
+    @Override
+    public String toString() {
+        return mName;
     }
 }

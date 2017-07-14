@@ -20,7 +20,7 @@ import java.util.List;
 public class ExerciseListAdapter extends BaseAdapter {
     private static final String TAG = ExerciseListAdapter.class.getName();
 
-    private List<Exercise> groups;
+    private List<Exercise> mExercises;
     protected Context context;
     protected LayoutInflater inflater;
 
@@ -28,15 +28,15 @@ public class ExerciseListAdapter extends BaseAdapter {
         this(context, new ArrayList<>());
     }
 
-    public ExerciseListAdapter(Context context, List<Exercise> groups) {
+    public ExerciseListAdapter(Context context, List<Exercise> exercises) {
         this.context = context;
-        this.groups = groups;
+        this.mExercises = exercises;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Exercise exercise = groups.get(position);
+        Exercise exercise = mExercises.get(position);
         if (convertView == null) {
             if (exercise.getType() == Exercise.REP)
                 convertView = new RepExerciseView(context, exercise);
@@ -47,18 +47,22 @@ public class ExerciseListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setGroups(List<Exercise> groups) {
-        this.groups = groups;
+    public void setExercises(List<Exercise> exercises) {
+        this.mExercises = exercises;
         notifyDataSetChanged();
     }
 
+    public List<Exercise> getExercises() {
+        return mExercises;
+    }
+
     public void addExercise(Exercise exercise) {
-        this.groups.add(exercise);
+        this.mExercises.add(exercise);
         notifyDataSetChanged();
     }
 
     public void reset() {
-        groups = new ArrayList<>();
+        mExercises = new ArrayList<>();
     }
 
 //    public void notifyDataSetChanged(boolean triggerReload) {
@@ -75,12 +79,12 @@ public class ExerciseListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return groups.size();
+        return mExercises.size();
     }
 
     @Override
     public Exercise getItem(int position) {
-        return groups.get(position);
+        return mExercises.get(position);
     }
 
     @Override

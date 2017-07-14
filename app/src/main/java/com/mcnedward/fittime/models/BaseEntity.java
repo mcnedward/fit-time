@@ -7,13 +7,13 @@ import java.io.Serializable;
  */
 public abstract class BaseEntity implements Serializable {
 
-    protected Long id = null;
+    protected Integer id = null;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }

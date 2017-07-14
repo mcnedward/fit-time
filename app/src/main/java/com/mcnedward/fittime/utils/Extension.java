@@ -6,9 +6,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 
 import com.mcnedward.fittime.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Edward on 2/1/2017.
@@ -64,5 +68,24 @@ public class Extension {
             Log.w(TAG, "There was a problem formatting the input for the rep counter...", e);
             return defaultValue;
         }
+    }
+
+    public static String join(List<String> list, String delimiter) {
+        StringBuilder sb = new StringBuilder();
+        String loopDelimiter = "";
+        for(String s : list) {
+            sb.append(loopDelimiter);
+            sb.append(s);
+            loopDelimiter = delimiter;
+        }
+        return sb.toString();
+    }
+
+    public static <T> List<T> asList(SparseArray<T> sparseArray) {
+        if (sparseArray == null) return null;
+        List<T> arrayList = new ArrayList<T>(sparseArray.size());
+        for (int i = 0; i < sparseArray.size(); i++)
+            arrayList.add(sparseArray.valueAt(i));
+        return arrayList;
     }
 }

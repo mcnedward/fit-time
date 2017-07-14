@@ -8,11 +8,11 @@ import java.util.List;
  */
 
 public interface IExercise {
-    Set addSet(String value);
-    void removeSet(Set set);
+    WorkSet addSet(String value);
+    void removeWorkSet(WorkSet workSet);
     String getName();
     void setName(String name);
     int getType();
     void setType(int type);
-    List<Set> getSets();
+    List<WorkSet> getWorkSets();
 }

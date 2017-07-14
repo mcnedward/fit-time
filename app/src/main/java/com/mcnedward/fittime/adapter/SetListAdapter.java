@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.mcnedward.fittime.R;
 import com.mcnedward.fittime.models.Exercise;
-import com.mcnedward.fittime.models.Set;
+import com.mcnedward.fittime.models.WorkSet;
 import com.mcnedward.fittime.utils.Extension;
 import com.mcnedward.fittime.views.ExerciseView;
 
@@ -41,25 +41,25 @@ public class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(SetListAdapter.ViewHolder holder, int position) {
-        if (mExercise.getSets().size() == 0) return;
-        Set rep = mExercise.getSets().get(position);
+        if (mExercise.getWorkSets().size() == 0) return;
+        WorkSet rep = mExercise.getWorkSets().get(position);
         holder.update(rep);
     }
 
     @Override
     public int getItemCount() {
-        return mExercise.getSets().size();
+        return mExercise.getWorkSets().size();
     }
 
-    private void removeSet(Set set) {
-        mExercise.removeSet(set);
+    private void removeSet(WorkSet workSet) {
+        mExercise.removeWorkSet(workSet);
         notifyDataSetChanged();
-        mExerciseView.onSetRemoved(set);
+        mExerciseView.onSetRemoved(workSet);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
-        private Set mSet;
+        private WorkSet mWorkSet;
         private SetListAdapter mParent;
 
         /**
@@ -77,13 +77,13 @@ public class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.ViewHold
             mButton.setOnClickListener(v -> remove());
         }
 
-        void update(Set set) {
-            mSet = set;
-            mTextView.setText(set.toString());
+        void update(WorkSet workSet) {
+            mWorkSet = workSet;
+            mTextView.setText(workSet.toString());
         }
 
         void remove() {
-            mParent.removeSet(mSet);
+            mParent.removeSet(mWorkSet);
         }
     }
 

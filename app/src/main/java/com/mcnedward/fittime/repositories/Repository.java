@@ -15,16 +15,17 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * TODO Move repos to factories or something like that
  * Created by Edward on 2/8/2016.
  */
-abstract class Repository<T extends BaseEntity> implements IRepository<T> {
+public abstract class Repository<T extends BaseEntity> implements IRepository<T> {
     private static final String TAG = "Repository";
 
     private static final String WHERE_ID_CLAUSE = "Id = ?";
     private DatabaseHelper helper;
     private SQLiteDatabase mDatabase;
 
-    Repository(Context context) {
+    public Repository(Context context) {
         this(DatabaseHelper.getInstance(context));
         open();
     }
@@ -97,7 +98,7 @@ abstract class Repository<T extends BaseEntity> implements IRepository<T> {
             mDatabase.beginTransaction();
             long id = mDatabase.insert(getTableName(), null,
                     generateContentValuesFromEntity(entity));
-            entity.setId(id);
+            entity.setId((int) id);
             mDatabase.setTransactionSuccessful();
         } catch (Exception e) {
             Log.e(TAG, "Error when trying to insert " + entity, e);
