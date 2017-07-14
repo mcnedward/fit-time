@@ -13,6 +13,8 @@
     <string name="placeholder">Replace Me!</string>
     <string name="zero">0</string>
 
+    <string name="log_exercises">Log Exercises</string>
+
     <!--Menu-->
     <string name="action_add">Add Exercise</string>
     <string name="action_calendar">View History</string>

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -15,8 +14,7 @@ import android.widget.Toast;
 import com.mcnedward.fittime.R;
 import com.mcnedward.fittime.exceptions.EntityAlreadyExistsException;
 import com.mcnedward.fittime.models.Exercise;
-import com.mcnedward.fittime.repositories.ExerciseRepository;
-import com.mcnedward.fittime.repositories.IExerciseRepository;
+import com.mcnedward.fittime.repositories.exercise.ExerciseRepository;
 import com.mcnedward.fittime.utils.Receiver;
 
 /**
@@ -29,7 +27,7 @@ public class AddExerciseView extends LinearLayout {
     private EditText mExerciseNameText;
     private RadioButton mTimedButton;
     private PopupWindow mPopupWindow;
-    private IExerciseRepository mExerciseRepository;
+    private ExerciseRepository mExerciseRepository;
 
     public AddExerciseView(Context context) {
         super(context);
@@ -48,8 +46,8 @@ public class AddExerciseView extends LinearLayout {
         inflate(mContext, R.layout.view_add_exercise, this);
         setBackground(ContextCompat.getDrawable(context, R.drawable.border));
 
-        mExerciseNameText = (EditText) findViewById(R.id.text_exercise_name);
-        mTimedButton = (RadioButton) findViewById(R.id.radio_timed);
+        mExerciseNameText = findViewById(R.id.text_exercise_name);
+        mTimedButton = findViewById(R.id.radio_timed);
 
         findViewById(R.id.button_add_exercise).setOnClickListener(v -> addExercise());
     }
@@ -68,6 +66,7 @@ public class AddExerciseView extends LinearLayout {
             mExerciseRepository.save(exercise);
         } catch (EntityAlreadyExistsException e) {
             mPopupWindow.dismiss();
+            e.printStackTrace();
             return;
         }
 

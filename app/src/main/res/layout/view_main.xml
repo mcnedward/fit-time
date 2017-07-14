@@ -3,15 +3,23 @@
     android:id="@+id/main_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/GhostWhite"
-    android:orientation="vertical">
+    android:background="@color/GhostWhite">
 
     <ListView
         android:id="@+id/list_exercises"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/button_log_history"
         android:divider="@null"
         android:dividerHeight="0dp"/>
+
+    <Button
+        android:id="@+id/button_log_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/MediumSeaGreen"
+        android:text="@string/log_exercises"/>
 
     <TextView
         android:layout_width="match_parent"

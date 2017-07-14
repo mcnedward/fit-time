@@ -1,7 +1,6 @@
 package com.mcnedward.fittime.views;
 
 import android.content.Context;
-import android.content.Entity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -15,9 +14,9 @@ import com.mcnedward.fittime.adapter.SetListAdapter;
 import com.mcnedward.fittime.exceptions.EntityAlreadyExistsException;
 import com.mcnedward.fittime.exceptions.EntityDoesNotExistException;
 import com.mcnedward.fittime.models.Exercise;
-import com.mcnedward.fittime.models.Set;
-import com.mcnedward.fittime.repositories.ExerciseRepository;
-import com.mcnedward.fittime.repositories.SetRepository;
+import com.mcnedward.fittime.models.WorkSet;
+import com.mcnedward.fittime.repositories.exercise.ExerciseRepository;
+import com.mcnedward.fittime.repositories.workSet.WorkSetRepository;
 
 /**
  * Created by Edward on 2/4/2017.
@@ -29,7 +28,7 @@ public abstract class ExerciseView extends LinearLayout {
     protected Context context;
     protected Exercise exercise;
     protected ExerciseRepository exerciseRepository;
-    protected SetRepository setRepository;
+    protected WorkSetRepository workSetRepository;
     private TextView mNoRepsText;
     private SetListAdapter mAdapter;
     private RecyclerView mRepList;
@@ -49,7 +48,7 @@ public abstract class ExerciseView extends LinearLayout {
         this.context = context;
         inflate(context, R.layout.item_exercise, this);
         exerciseRepository = new ExerciseRepository(context);
-        setRepository = new SetRepository(context);
+        workSetRepository = new WorkSetRepository(context);
 
         // Add the view for the specific type of exercise
         LinearLayout container = (LinearLayout) findViewById(R.id.container_exercise);
@@ -70,22 +69,22 @@ public abstract class ExerciseView extends LinearLayout {
         mName.setText(exercise.getName());
     }
 
-    public void onSetRemoved(Set set) {
+    public void onSetRemoved(WorkSet workSet) {
         updateSetListVisible();
         try {
-            setRepository.delete(set);
+            workSetRepository.delete(workSet);
         } catch (EntityDoesNotExistException e) {
-            Toast.makeText(context, "There was a problem when trying to save your set...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "There was a problem when trying to save your workSet...", Toast.LENGTH_SHORT).show();
             Log.e(TAG, e.getMessage(), e);
         }
     }
 
     protected void addSet(String value) {
-        Set set = exercise.addSet(value);
+        WorkSet workSet = exercise.addSet(value);
         try {
-            setRepository.save(set);
+            workSetRepository.save(workSet);
         } catch (EntityAlreadyExistsException e) {
-            Toast.makeText(context, "There was a problem when trying to save your set...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "There was a problem when trying to save your workSet...", Toast.LENGTH_SHORT).show();
             Log.e(TAG, e.getMessage(), e);
         }
         mAdapter.notifyDataSetChanged();
@@ -93,7 +92,7 @@ public abstract class ExerciseView extends LinearLayout {
     }
 
     private void updateSetListVisible() {
-        if (exercise.getSets().size() <= 0) {
+        if (exercise.getWorkSets().size() <= 0) {
             mRepList.setVisibility(GONE);
             mNoRepsText.setVisibility(VISIBLE);
         } else {
