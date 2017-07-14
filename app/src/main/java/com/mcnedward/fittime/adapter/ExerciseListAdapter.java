@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.mcnedward.fittime.models.Exercise;
+import com.mcnedward.fittime.views.ExerciseView;
 import com.mcnedward.fittime.views.RepExerciseView;
 import com.mcnedward.fittime.views.TimedExerciseView;
 
@@ -43,7 +44,7 @@ public class ExerciseListAdapter extends BaseAdapter {
             else if (exercise.getType() == Exercise.TIMED)
                 convertView = new TimedExerciseView(context, exercise);
         }
-//        ((ExerciseView)convertView).update(this, exercise);
+        ((ExerciseView)convertView).notifyDataSetChanged();
         return convertView;
     }
 
@@ -64,18 +65,6 @@ public class ExerciseListAdapter extends BaseAdapter {
     public void reset() {
         mExercises = new ArrayList<>();
     }
-
-//    public void notifyDataSetChanged(boolean triggerReload) {
-//        if (triggerReload) {
-//            List<Exercise> data = loader.loadInBackground();
-//            setGroups(data);
-//        } else
-//            notifyDataSetChanged();
-//    }
-//
-//    public void setLoader(ExerciseDataLoader loader) {
-//        this.loader = loader;
-//    }
 
     @Override
     public int getCount() {

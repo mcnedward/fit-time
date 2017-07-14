@@ -13,9 +13,11 @@ import java.util.List;
 
 import static com.mcnedward.fittime.repositories.DatabaseHelper.ID;
 import static com.mcnedward.fittime.repositories.DatabaseHelper.W_EXERCISE_ID;
+import static com.mcnedward.fittime.repositories.DatabaseHelper.W_LOGGED;
 import static com.mcnedward.fittime.repositories.DatabaseHelper.W_NUMBER;
 import static com.mcnedward.fittime.repositories.DatabaseHelper.W_TYPE;
 import static com.mcnedward.fittime.repositories.DatabaseHelper.W_VALUE;
+import static com.mcnedward.fittime.repositories.DatabaseHelper.W_WORK_DATE;
 
 /**
  * Created by Edward on 2/5/2017.
@@ -27,12 +29,11 @@ public class WorkSetRepository extends Repository<WorkSet> implements IRepositor
     }
 
     public List<WorkSet> getSetsForDay(String dateStamp) {
-        List<WorkSet> workSets = query(DatabaseHelper.W_WORK_DATE + " = ?", new String[]{dateStamp}, null, null, null);
-        return workSets;
+        return query(String.format("%s = ? AND %s > 0", W_WORK_DATE, W_LOGGED), new String[]{dateStamp}, null, null, W_NUMBER);
     }
 
     public List<WorkSet> getSetsByExerciseId(long exerciseId) {
-        return query(String.format("%s = ?", W_EXERCISE_ID), new String[]{String.valueOf(exerciseId)}, null, null, W_NUMBER);
+        return query(String.format("%s = ? AND %s IS 0", W_EXERCISE_ID, W_LOGGED), new String[]{String.valueOf(exerciseId)}, null, null, W_NUMBER);
     }
 
     @Override
@@ -42,7 +43,9 @@ public class WorkSetRepository extends Repository<WorkSet> implements IRepositor
         int number = cursor.getInt(cursor.getColumnIndexOrThrow(W_NUMBER));
         int type = cursor.getInt(cursor.getColumnIndexOrThrow(W_TYPE));
         String value = cursor.getString(cursor.getColumnIndexOrThrow(W_VALUE));
-        return new WorkSet(id, exerciseId, number, type, value);
+        String workDate = cursor.getString(cursor.getColumnIndexOrThrow(W_WORK_DATE));
+        boolean logged = cursor.getInt(cursor.getColumnIndexOrThrow(W_LOGGED)) > 0;
+        return new WorkSet(id, exerciseId, number, type, value, workDate, logged);
     }
 
     @Override
@@ -53,6 +56,8 @@ public class WorkSetRepository extends Repository<WorkSet> implements IRepositor
         values.put(W_NUMBER, entity.getNumber());
         values.put(W_TYPE, entity.getType());
         values.put(W_VALUE, entity.getValue());
+        values.put(W_WORK_DATE, entity.getWorkDate());
+        values.put(W_LOGGED, entity.isLogged());
         return values;
     }
 
@@ -68,7 +73,9 @@ public class WorkSetRepository extends Repository<WorkSet> implements IRepositor
                 W_EXERCISE_ID,
                 W_NUMBER,
                 W_TYPE,
-                W_VALUE
+                W_VALUE,
+                W_WORK_DATE,
+                W_LOGGED
         };
     }
 }

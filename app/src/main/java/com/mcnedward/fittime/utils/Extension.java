@@ -73,7 +73,7 @@ public class Extension {
     public static String join(List<String> list, String delimiter) {
         StringBuilder sb = new StringBuilder();
         String loopDelimiter = "";
-        for(String s : list) {
+        for (String s : list) {
             sb.append(loopDelimiter);
             sb.append(s);
             loopDelimiter = delimiter;

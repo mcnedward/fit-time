@@ -35,11 +35,13 @@ public abstract class Repository<T extends BaseEntity> implements IRepository<T>
         open();
     }
 
+    @Override
     public T get(long id) {
         List<T> dataList = query(WHERE_ID_CLAUSE, new String[]{String.valueOf(id)}, null, null, null);
         return !dataList.isEmpty() ? dataList.get(0) : null;
     }
 
+    @Override
     public T get(String... args) {
         List<String> selectionArgs = new ArrayList<>();
         Collections.addAll(selectionArgs, args);
@@ -54,8 +56,9 @@ public abstract class Repository<T extends BaseEntity> implements IRepository<T>
      * @return True if the entity was saved, false otherwise.
      * @throws EntityAlreadyExistsException If the entity already exists in the mDatabase.
      */
+    @Override
     public T save(T entity) throws EntityAlreadyExistsException {
-        if (entity == null && entityExists(entity.getId()))
+        if (entityExists(entity.getId()))
             throw new EntityAlreadyExistsException(entity.getId());
         return insert(entity);
     }
@@ -67,10 +70,25 @@ public abstract class Repository<T extends BaseEntity> implements IRepository<T>
      * @return True if the entity was updated, false otherwise
      * @throws EntityDoesNotExistException If the entity does not exist.
      */
+    @Override
     public boolean update(T entity) throws EntityDoesNotExistException {
         if (!entityExists(entity.getId()))
             throw new EntityDoesNotExistException(entity.getId());
         return change(entity);
+    }
+
+    /**
+     * Saves an entity if it does not exist, or updates an entity if it does exist.
+     * @param entity The entity to save or update
+     * @return The entity
+     */
+    @Override
+    public T saveOrUpdate(T entity) {
+        if (entityExists(entity.getId())) {
+            change(entity);
+            return entity;
+        }
+        return insert(entity);
     }
 
     /**
@@ -80,6 +98,7 @@ public abstract class Repository<T extends BaseEntity> implements IRepository<T>
      * @return True if the entity was deleted, false otherwise.
      * @throws EntityDoesNotExistException If the entity does not exist.
      */
+    @Override
     public boolean delete(T entity) throws EntityDoesNotExistException {
         if (!entityExists(entity.getId()))
             throw new EntityDoesNotExistException(entity.getId());
@@ -226,7 +245,7 @@ public abstract class Repository<T extends BaseEntity> implements IRepository<T>
      * @param id The id of the entity of check.
      * @return True if the entity already exists, false otherwise.
      */
-    private boolean entityExists(long id) {
+    private boolean entityExists(Integer id) {
         Cursor cursor = null;
         try {
             cursor = mDatabase.query(getTableName(), new String[]{DatabaseHelper.ID},

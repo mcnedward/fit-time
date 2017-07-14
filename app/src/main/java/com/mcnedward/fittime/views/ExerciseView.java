@@ -87,6 +87,10 @@ public abstract class ExerciseView extends LinearLayout {
             Toast.makeText(context, "There was a problem when trying to save your workSet...", Toast.LENGTH_SHORT).show();
             Log.e(TAG, e.getMessage(), e);
         }
+        notifyDataSetChanged();
+    }
+
+    public void notifyDataSetChanged() {
         mAdapter.notifyDataSetChanged();
         updateSetListVisible();
     }

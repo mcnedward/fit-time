@@ -18,12 +18,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database title
     private static String DB_NAME = "FitTime.db";
     // Database version - increment this number to upgrade the database
-    private static final int DB_VERSION = 9;
+    private static final int DB_VERSION = 13;
 
     // Tables
     public static final String EXERCISE_TABLE = "Exercises";
     public static final String WORK_SETS_TABLE = "WorkSets";
-    public static final String HISTORY_TABLE = "History";
     // Id column, which should be the same across all tables
     public static final String ID = "Id";
     // Exercises table
@@ -35,9 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String W_TYPE = "Type";
     public static final String W_VALUE = "Value";
     public static final String W_WORK_DATE = "WorkDate";
-    // History table
-    public static final String H_HISTORY_DATE = "HistoryDate";
-    public static final String H_EXERCISE_ID = "ExerciseId";
+    public static final String W_LOGGED = "Logged";
 
     private DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -58,16 +55,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     private static final String createExercisesTable = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s TEXT, %s TEXT)", EXERCISE_TABLE, ID, E_NAME, E_TYPE);
 
-    private static final String createWorkSetsTable = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s INTEGER, %s INTEGER, %s INTEGER, %s TEXT, %s TEXT, FOREIGN KEY(%s) REFERENCES %s(%s))", WORK_SETS_TABLE, ID, W_EXERCISE_ID, W_NUMBER, W_TYPE, W_VALUE, W_WORK_DATE, W_EXERCISE_ID, EXERCISE_TABLE, ID);
-
-    private static final String createHistoryTable = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s TEXT, %s INTEGER, FOREIGN KEY(%s) REFERENCES %s(%s))",
-            HISTORY_TABLE, ID, H_HISTORY_DATE, H_EXERCISE_ID, H_EXERCISE_ID, EXERCISE_TABLE, ID);
+    private static final String createWorkSetsTable = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s INTEGER, %s INTEGER, %s INTEGER, %s TEXT, %s TEXT, %s BIT, FOREIGN KEY(%s) REFERENCES %s(%s))", WORK_SETS_TABLE, ID, W_EXERCISE_ID, W_NUMBER, W_TYPE, W_VALUE, W_WORK_DATE, W_LOGGED, W_EXERCISE_ID, EXERCISE_TABLE, ID);
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(createExercisesTable);
         sqLiteDatabase.execSQL(createWorkSetsTable);
-        sqLiteDatabase.execSQL(createHistoryTable);
     }
 
     @Override
@@ -85,6 +78,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void dropTables(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(DROP_TABLE + EXERCISE_TABLE);
         sqLiteDatabase.execSQL(DROP_TABLE + WORK_SETS_TABLE);
-        sqLiteDatabase.execSQL(DROP_TABLE + HISTORY_TABLE);
     }
 }

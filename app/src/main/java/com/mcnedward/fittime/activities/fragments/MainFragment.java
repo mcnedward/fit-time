@@ -70,6 +70,7 @@ public class MainFragment extends Fragment {
 
         ListView listView = view.findViewById(R.id.list_exercises);
         Button logExercisesButton = view.findViewById(R.id.button_log_history);
+        Extension.setRippleBackground(getContext(), logExercisesButton, R.color.Green, R.color.MediumSeaGreen);
 
         List<Exercise> exercises = mExerciseRepository.getAll();
         mListAdapter = new ExerciseListAdapter(view.getContext(), exercises);
@@ -92,7 +93,7 @@ public class MainFragment extends Fragment {
         for (Exercise exercise : mListAdapter.getExercises()) {
             // Use the current date for each work set's history, then update
             for (WorkSet workSet : exercise.getWorkSets()) {
-                workSet.setWorkDate(historyDate);
+                workSet.log(historyDate);
                 try {
                     mWorkSetRepository.update(workSet);
                 } catch (EntityDoesNotExistException e) {
@@ -102,7 +103,14 @@ public class MainFragment extends Fragment {
             }
             // Clear out the work sets for the day
             exercise.clearWorkSets();
+            try {
+                mExerciseRepository.update(exercise);
+            } catch (EntityDoesNotExistException e) {
+                e.printStackTrace();
+                // TODO Handle this?
+            }
         }
+        mListAdapter.notifyDataSetChanged();
     }
 
     public void getHistory(Context context) {

@@ -18,6 +18,8 @@ public interface IRepository<T> {
 
     boolean update(T entity) throws EntityDoesNotExistException;
 
+    T saveOrUpdate(T entity);
+
     boolean delete(T entity) throws EntityDoesNotExistException;
 
     List<T> getAll();
