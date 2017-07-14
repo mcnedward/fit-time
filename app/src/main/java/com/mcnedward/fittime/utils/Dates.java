@@ -4,15 +4,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
+ * Extension class for getting formatted dates.
  * Created by Edward on 7/12/2017.
  */
 
 public class Dates {
-    public static String PRETTY_DATE = "dd/MM/yyyy";
-    public static String DATABASE_DATE = "yyyy-MM-dd";
-    public static String NUMBER_DATE = "yyyyMMdd";
+    private static String PRETTY_DATE = "dd/MM/yyyy";
+    private static String DATABASE_DATE = "yyyy-MM-dd";
+    private static String DATABASE_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
+    private static String NUMBER_DATE = "yyyyMMdd";
+    private static Locale US = Locale.US;
 
     /**
      * Gets a date stamp in the database format (yyyyy-MM-dd).
@@ -21,7 +25,18 @@ public class Dates {
      */
     public static String getDatabaseDateStamp() {
         Date date = getDate();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATABASE_DATE);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATABASE_DATE, US);
+        return simpleDateFormat.format(date);
+    }
+
+    /**
+     * Gets a date time stamp in the database format (yyyyy-MM-dd).
+     *
+     * @return The date time stamp in database format.
+     */
+    public static String getDatabaseDateTimeStamp() {
+        Date date = getDate();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATABASE_DATE_TIME, US);
         return simpleDateFormat.format(date);
     }
 
@@ -32,7 +47,7 @@ public class Dates {
      * @return The date.
      */
     public static String getCalendarPrettyDate(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(PRETTY_DATE);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(PRETTY_DATE, US);
         return simpleDateFormat.format(date);
     }
 
@@ -65,12 +80,12 @@ public class Dates {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1 * dateRange);
         Date previousDate = calendar.getTime();
-        return new SimpleDateFormat(format).format(previousDate);
+        return new SimpleDateFormat(format, US).format(previousDate);
     }
 
     public static String getNumberDateStamp() {
         Date date = getDate();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(NUMBER_DATE);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(NUMBER_DATE, US);
         return simpleDateFormat.format(date);
     }
 
@@ -89,11 +104,11 @@ public class Dates {
     }
 
     public static String convertDate(String date, String fromFormat, String toFormat) {
-        SimpleDateFormat fromDateFormat = new SimpleDateFormat(fromFormat);
+        SimpleDateFormat fromDateFormat = new SimpleDateFormat(fromFormat, US);
         String d = null;
         try {
             Date theDate = fromDateFormat.parse(date);
-            SimpleDateFormat toDateFormat = new SimpleDateFormat(toFormat);
+            SimpleDateFormat toDateFormat = new SimpleDateFormat(toFormat, US);
             d = toDateFormat.format(theDate);
         } catch (ParseException e) {
             e.printStackTrace();

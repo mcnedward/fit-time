@@ -30,10 +30,23 @@ public class Exercise extends BaseEntity implements IExercise {
         this(null, name, type, new ArrayList<>());
     }
 
-    public WorkSet addSet(String value) {
-        WorkSet workSet = new WorkSet(id, mWorkSets.size() + 1, mType, value);
+    /**
+     * Creates a work set for this exercise
+     * @param value The value for the work set, either the time or the reps
+     * @return The created work set
+     */
+    public WorkSet createWorkSet(String value) {
+        WorkSet workSet = new WorkSet(id, mType, value);
         mWorkSets.add(workSet);
         return workSet;
+    }
+
+    /**
+     * Adds an existing work set to this exercise.
+     * @param workSet
+     */
+    public void addWorkSet(WorkSet workSet) {
+        mWorkSets.add(workSet);
     }
 
     /**
@@ -42,13 +55,7 @@ public class Exercise extends BaseEntity implements IExercise {
      * @param workSet
      */
     public void removeWorkSet(WorkSet workSet) {
-        boolean removed = mWorkSets.remove(workSet);
-        if (removed) {
-            // Need to sort all the sets to account for the deleted one
-            for (int i = 0; i < mWorkSets.size(); i++) {
-                mWorkSets.get(i).setNumber(i + 1);
-            }
-        }
+        mWorkSets.remove(workSet);
     }
 
     public void clearWorkSets() {

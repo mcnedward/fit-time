@@ -43,7 +43,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.ViewHold
     public void onBindViewHolder(SetListAdapter.ViewHolder holder, int position) {
         if (mExercise.getWorkSets().size() == 0) return;
         WorkSet rep = mExercise.getWorkSets().get(position);
-        holder.update(rep);
+        holder.update(rep, position + 1);
     }
 
     @Override
@@ -71,15 +71,15 @@ public class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.ViewHold
         ViewHolder(Context context, View itemView, SetListAdapter setListAdapter) {
             super(itemView);
             mParent = setListAdapter;
-            mTextView = (TextView) itemView.findViewById(R.id.text_rep);
-            ImageView mButton = (ImageView) itemView.findViewById(R.id.button_delete);
+            mTextView = itemView.findViewById(R.id.text_rep);
+            ImageView mButton = itemView.findViewById(R.id.button_delete);
             Extension.setRippleBackground(context, mButton);
             mButton.setOnClickListener(v -> remove());
         }
 
-        void update(WorkSet workSet) {
+        void update(WorkSet workSet, int workSetNumber) {
             mWorkSet = workSet;
-            mTextView.setText(workSet.toString());
+            mTextView.setText(workSet.toString(workSetNumber));
         }
 
         void remove() {

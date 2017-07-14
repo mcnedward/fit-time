@@ -89,11 +89,10 @@ public class MainFragment extends Fragment {
     }
 
     private void logExercises() {
-        String historyDate = Dates.getDatabaseDateStamp();
         for (Exercise exercise : mListAdapter.getExercises()) {
             // Use the current date for each work set's history, then update
             for (WorkSet workSet : exercise.getWorkSets()) {
-                workSet.log(historyDate);
+                workSet.setIsLogged(true);
                 try {
                     mWorkSetRepository.update(workSet);
                 } catch (EntityDoesNotExistException e) {
@@ -117,7 +116,11 @@ public class MainFragment extends Fragment {
         History history = mExerciseRepository.getHistoryForCurrentDate();
         List<String> eList = new ArrayList<>();
         for (Exercise exercise : history.getExercises()) {
-            List<String> wList = exercise.getWorkSets().stream().map(WorkSet::toString).collect(Collectors.toList());
+            List<String> wList = new ArrayList<>();
+            for (int i = 0; i < exercise.getWorkSets().size(); i++) {
+                WorkSet workSet = exercise.getWorkSets().get(i);
+                wList.add(workSet.toString(i + 1));
+            }
             String e = exercise.getName() + " Sets: " + Extension.join(wList, ", ");
             eList.add(e);
         }

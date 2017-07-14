@@ -51,17 +51,14 @@ public class RepExerciseView extends ExerciseView {
 
         mRepCountText = findViewById(R.id.text_rep_count);
         mRepCountText.setSelection(mRepCountText.getText().length());
-        mRepCountText.setFilters(new InputFilter[]{new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dStart, int dEnd) {
-                try {
-                    int input = Integer.parseInt(dest.toString() + source.toString());
-                    if (input < 0) return "0";
-                    return String.valueOf(input);
-                } catch (NumberFormatException e) {
-                    Log.w(TAG, "There was a problem formatting the input for the rep counter...", e);
-                    return "0";
-                }
+        mRepCountText.setFilters(new InputFilter[]{(source, start, end, dest, dStart, dEnd) -> {
+            try {
+                int input = Integer.parseInt(dest.toString() + source.toString());
+                if (input < 0) return "0";
+                return String.valueOf(input);
+            } catch (NumberFormatException e) {
+                Log.w(TAG, "There was a problem formatting the input for the rep counter...", e);
+                return "0";
             }
         }});
 

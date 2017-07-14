@@ -80,7 +80,7 @@ public abstract class ExerciseView extends LinearLayout {
     }
 
     protected void addSet(String value) {
-        WorkSet workSet = exercise.addSet(value);
+        WorkSet workSet = exercise.createWorkSet(value);
         try {
             workSetRepository.save(workSet);
         } catch (EntityAlreadyExistsException e) {

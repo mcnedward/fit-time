@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 public interface IExercise {
-    WorkSet addSet(String value);
+    WorkSet createWorkSet(String value);
     void removeWorkSet(WorkSet workSet);
     String getName();
     void setName(String name);

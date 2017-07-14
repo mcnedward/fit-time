@@ -35,17 +35,20 @@ public class ExerciseRepository extends Repository<Exercise> implements IReposit
         // Get all the work sets first
         List<WorkSet> workSets = mSetRepository.getSetsForDay(dateStamp);
         // Then get the exercises for those work sets
-        SparseArray<Exercise> exercises = new SparseArray();
+        SparseArray<Exercise> exercises = new SparseArray<>();
 
         for (WorkSet workSet : workSets) {
             int exerciseId = workSet.getExerciseId();
-            if (exercises.get(exerciseId) == null) {
-                Exercise exercise = get(exerciseId);
+            Exercise exercise =exercises.get(exerciseId);
+            if (exercise == null) {
+                // Get the exercise from the db
+                exercise = get(exerciseId);
                 exercises.put(exerciseId, exercise);
             }
+            // This exercise will have no work sets, so we need to add them here
+            exercise.addWorkSet(workSet);
         }
-        History history = new History(dateStamp, Extension.asList(exercises));
-        return history;
+        return new History(dateStamp, Extension.asList(exercises));
     }
 
     @Override

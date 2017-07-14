@@ -37,14 +37,14 @@ public class TimedExerciseView extends ExerciseView implements UIThreadListener 
     private void initialize() {
         mTimer = new Timer();
 
-        mTimerText = (TextView) findViewById(R.id.text_timer);
-        mTimerButton = (ImageView) findViewById(R.id.button_timer);
+        mTimerText = findViewById(R.id.text_timer);
+        mTimerButton = findViewById(R.id.button_timer);
         Extension.setRippleBackground(context, mTimerButton);
         mTimerButton.setOnClickListener(v -> toggleTimer());
-        mCheckButton = (ImageView) findViewById(R.id.button_check);
+        mCheckButton = findViewById(R.id.button_check);
         Extension.setRippleBackground(context, mCheckButton);
         mCheckButton.setOnClickListener(v -> finishRep());
-        mStopButton = (ImageView) findViewById(R.id.button_stop);
+        mStopButton = findViewById(R.id.button_stop);
         Extension.setRippleBackground(context, mStopButton);
         mStopButton.setOnClickListener(v -> resetRep());
 

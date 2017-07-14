@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database title
     private static String DB_NAME = "FitTime.db";
     // Database version - increment this number to upgrade the database
-    private static final int DB_VERSION = 13;
+    private static final int DB_VERSION = 15;
 
     // Tables
     public static final String EXERCISE_TABLE = "Exercises";
@@ -34,6 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String W_TYPE = "Type";
     public static final String W_VALUE = "Value";
     public static final String W_WORK_DATE = "WorkDate";
+    public static final String W_WORK_DATE_TIME = "WorkDateTime";
     public static final String W_LOGGED = "Logged";
 
     private DatabaseHelper(Context context) {
@@ -55,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     private static final String createExercisesTable = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s TEXT, %s TEXT)", EXERCISE_TABLE, ID, E_NAME, E_TYPE);
 
-    private static final String createWorkSetsTable = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s INTEGER, %s INTEGER, %s INTEGER, %s TEXT, %s TEXT, %s BIT, FOREIGN KEY(%s) REFERENCES %s(%s))", WORK_SETS_TABLE, ID, W_EXERCISE_ID, W_NUMBER, W_TYPE, W_VALUE, W_WORK_DATE, W_LOGGED, W_EXERCISE_ID, EXERCISE_TABLE, ID);
+    private static final String createWorkSetsTable = String.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s INTEGER, %s INTEGER, %s INTEGER, %s TEXT, %s TEXT, %s TEXT, %s BIT, FOREIGN KEY(%s) REFERENCES %s(%s))", WORK_SETS_TABLE, ID, W_EXERCISE_ID, W_NUMBER, W_TYPE, W_VALUE, W_WORK_DATE, W_WORK_DATE_TIME, W_LOGGED, W_EXERCISE_ID, EXERCISE_TABLE, ID);
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
