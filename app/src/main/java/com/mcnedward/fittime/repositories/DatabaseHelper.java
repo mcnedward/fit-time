@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database title
     private static String DB_NAME = "FitTime.db";
     // Database version - increment this number to upgrade the database
-    private static final int DB_VERSION = 8;
+    private static final int DB_VERSION = 9;
 
     // Tables
     public static final String EXERCISE_TABLE = "Exercises";

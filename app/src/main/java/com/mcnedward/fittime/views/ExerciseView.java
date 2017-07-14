@@ -51,17 +51,17 @@ public abstract class ExerciseView extends LinearLayout {
         workSetRepository = new WorkSetRepository(context);
 
         // Add the view for the specific type of exercise
-        LinearLayout container = (LinearLayout) findViewById(R.id.container_exercise);
+        LinearLayout container = findViewById(R.id.container_exercise);
         inflate(context, getLayoutResource(), container);
 
         // Timer view should only be shown for timed exercises
         if (exercise.getType() == Exercise.TIMED)
             (findViewById(R.id.text_timer)).setVisibility(VISIBLE);
-        TextView mName = (TextView) findViewById(R.id.text_name);
-        mNoRepsText = (TextView) findViewById(R.id.text_no_reps);
+        TextView mName = findViewById(R.id.text_name);
+        mNoRepsText = findViewById(R.id.text_no_reps);
 
         mAdapter = new SetListAdapter(context, exercise, this);
-        mRepList = (RecyclerView) findViewById(R.id.list_reps);
+        mRepList = findViewById(R.id.list_reps);
         mRepList.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         mRepList.setAdapter(mAdapter);
         updateSetListVisible();

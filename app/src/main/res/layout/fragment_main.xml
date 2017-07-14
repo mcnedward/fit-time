@@ -21,12 +21,4 @@
         android:background="@color/MediumSeaGreen"
         android:text="@string/log_exercises"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/text_no_exercises"
-        android:gravity="center"
-        android:visibility="gone"
-        android:text="@string/no_exercises_message"
-        android:textSize="20sp"/>
 </RelativeLayout>

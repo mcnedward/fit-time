@@ -33,23 +33,23 @@ public class RepExerciseView extends ExerciseView {
     }
 
     private void initialize() {
-        ImageView plus5Button = (ImageView) findViewById(R.id.button_plus_5);
+        ImageView plus5Button = findViewById(R.id.button_plus_5);
         Extension.setRippleBackground(context, plus5Button);
         plus5Button.setOnClickListener(v -> updateValue(5));
 
-        ImageView plusButton = (ImageView) findViewById(R.id.button_plus);
+        ImageView plusButton = findViewById(R.id.button_plus);
         Extension.setRippleBackground(context, plusButton);
         plusButton.setOnClickListener(v -> updateValue(1));
 
-        ImageView remove5Button = (ImageView) findViewById(R.id.button_remove_5);
+        ImageView remove5Button = findViewById(R.id.button_remove_5);
         Extension.setRippleBackground(context, remove5Button);
         remove5Button.setOnClickListener(v -> updateValue(-5));
 
-        ImageView removeButton = (ImageView) findViewById(R.id.button_remove);
+        ImageView removeButton = findViewById(R.id.button_remove);
         Extension.setRippleBackground(context, removeButton);
         removeButton.setOnClickListener(v -> updateValue(-1));
 
-        mRepCountText = (EditText) findViewById(R.id.text_rep_count);
+        mRepCountText = findViewById(R.id.text_rep_count);
         mRepCountText.setSelection(mRepCountText.getText().length());
         mRepCountText.setFilters(new InputFilter[]{new InputFilter() {
             @Override
@@ -65,7 +65,7 @@ public class RepExerciseView extends ExerciseView {
             }
         }});
 
-        ImageView mCheckButton = (ImageView) findViewById(R.id.button_check_rep);
+        ImageView mCheckButton = findViewById(R.id.button_check_rep);
         Extension.setRippleBackground(context, mCheckButton);
         mCheckButton.setOnClickListener(v -> finishRep());
     }
