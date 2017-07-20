@@ -1,12 +1,12 @@
-package com.mcnedward.fittime.activities.fragments;
+package com.mcnedward.fittime.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,13 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.mcnedward.fittime.R;
-import com.mcnedward.fittime.activities.MainActivity;
 import com.mcnedward.fittime.adapter.ExerciseListAdapter;
 import com.mcnedward.fittime.exceptions.EntityDoesNotExistException;
 import com.mcnedward.fittime.models.Exercise;
@@ -28,14 +28,12 @@ import com.mcnedward.fittime.models.History;
 import com.mcnedward.fittime.models.WorkSet;
 import com.mcnedward.fittime.repositories.exercise.ExerciseRepository;
 import com.mcnedward.fittime.repositories.workSet.WorkSetRepository;
-import com.mcnedward.fittime.utils.Dates;
 import com.mcnedward.fittime.utils.Extension;
 import com.mcnedward.fittime.utils.Receiver;
 import com.mcnedward.fittime.views.AddExerciseView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Edward on 7/13/2017.
@@ -77,7 +75,7 @@ public class MainFragment extends Fragment {
         listView.setAdapter(mListAdapter);
 
         // Add the exercise placeholder view to the footer of the list
-        View exercisePlaceholderView = inflater.inflate(R.layout.item_exercise_placeholder, container);
+        View exercisePlaceholderView = inflater.inflate(R.layout.item_exercise_placeholder, container, false);
         listView.addFooterView(exercisePlaceholderView);
         exercisePlaceholderView.setOnClickListener(v -> openPopup(getContext()));
 
@@ -155,7 +153,7 @@ public class MainFragment extends Fragment {
     public void onResume() {
         if (!mIsReceiverRegistered) {
             mIsReceiverRegistered = true;
-            getActivity(). registerReceiver(mReceiver, new IntentFilter(Receiver.ADD_EXERCISE_ACTION));
+            getActivity().registerReceiver(mReceiver, new IntentFilter(Receiver.ADD_EXERCISE_ACTION));
         }
         super.onResume();
     }

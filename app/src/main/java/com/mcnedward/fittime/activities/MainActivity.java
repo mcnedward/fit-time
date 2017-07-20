@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mcnedward.fittime.R;
+import com.mcnedward.fittime.fragments.HistoryFragment;
+import com.mcnedward.fittime.fragments.MainFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,6 +15,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (findViewById(R.id.container_fragment) != null) {
+            if (savedInstanceState != null) return;
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container_fragment, new MainFragment())
+                    .commit();
+        }
     }
 
     @Override
@@ -20,7 +31,14 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem calendarItem = menu.findItem(R.id.action_calendar);
-        calendarItem.setOnMenuItemClickListener(item -> true);
+        calendarItem.setOnMenuItemClickListener(item -> {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container_fragment, new HistoryFragment())
+                    .addToBackStack(null)
+                    .commit();
+            return true;
+        });
         return true;
     }
 }

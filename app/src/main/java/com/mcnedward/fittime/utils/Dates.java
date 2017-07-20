@@ -12,11 +12,11 @@ import java.util.Locale;
  */
 
 public class Dates {
-    private static String PRETTY_DATE = "dd/MM/yyyy";
-    private static String DATABASE_DATE = "yyyy-MM-dd";
-    private static String DATABASE_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
-    private static String NUMBER_DATE = "yyyyMMdd";
-    private static Locale US = Locale.US;
+    public static String PRETTY_DATE = "dd/MM/yyyy";
+    public static String DATABASE_DATE = "yyyy-MM-dd";
+    public static String DATABASE_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
+    public static String NUMBER_DATE = "yyyyMMdd";
+    public static Locale US = Locale.US;
 
     /**
      * Gets a date stamp in the database format (yyyyy-MM-dd).

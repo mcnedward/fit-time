@@ -23,7 +23,6 @@ public class ExerciseListAdapter extends BaseAdapter {
 
     private List<Exercise> mExercises;
     protected Context context;
-    protected LayoutInflater inflater;
 
     public ExerciseListAdapter(Context context) {
         this(context, new ArrayList<>());
@@ -32,7 +31,6 @@ public class ExerciseListAdapter extends BaseAdapter {
     public ExerciseListAdapter(Context context, List<Exercise> exercises) {
         this.context = context;
         this.mExercises = exercises;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
